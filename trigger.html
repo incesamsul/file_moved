@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Move files</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .full-height {
+            height: 100vh !important;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container full-height d-flex align-items-center justify-content-center">
+        <div class="row ">
+            <div class="col-sm-12 d-flex align-items-center justify-content-center flex-column">
+                <button class="btn btn-outline-primary" id="move-files-button">Move Files</button>
+                <div id="status" class="mt-5">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#move-files-button").click(function () {
+                $.ajax({
+                    url: "move_files.php",
+                    type: "POST",
+                    data: {},
+                    success: function (response) {
+                        if (response > 0) {
+                            $('#status').html('<div class="alert alert-success">' + response + ' file berhasil di pindahkan</div>');
+                        } else {
+                            $('#status').html('<div class="alert alert-danger">tidak ada file yang di pindahkan</div>');
+                        }
+
+                        // alert(response);
+                    },
+                    error: function (xhr) {
+                        alert("Error: " + xhr.statusText);
+                    },
+                    beforeSend: function () {
+                        $('#status').html('<i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i> Loading ...');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>
