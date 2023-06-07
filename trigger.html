@@ -8,10 +8,49 @@
     <title>Move files</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+        body {
+            background-color: #f4f4f460;
+        }
+
         .full-height {
             height: 100vh !important;
+        }
+
+        .floating-button {
+            position: fixed;
+            right: 10px;
+            top: 10px;
+        }
+
+        .button-wrapper {
+            background-color: green;
+            cursor: pointer;
+            color: white;
+            font-size: 20px;
+            border-radius: 50%;
+            height: 50px;
+            width: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: .5s;
+        }
+
+        .button-wrapper:hover {
+            transform: scale(1.2);
+        }
+
+        input,
+        button {
+            padding: 15px !important;
+        }
+
+        .main-radius {
+            border-radius: 15px !important;
         }
     </style>
 
@@ -19,12 +58,36 @@
 
 <body>
 
+    <div class="btn-wrap tricky">
+        <a href="javascript:void(0)" class="btn" title="No">
+            <span></span>
+        </a>
+    </div>
+    <div class="floating-button">
+        <a href="import.php" class="button-wrapper" title="import data langganan">
+            <i class="fas fa-file-excel"></i>
+        </a>
+    </div>
+
     <div class="container full-height d-flex align-items-center justify-content-center">
         <div class="row ">
-            <div class="col-sm-12 d-flex align-items-center justify-content-center flex-column">
-                <button class="btn btn-outline-primary" id="move-files-button">Move Files</button>
-                <div id="status" class="mt-5">
-
+            <div class="col-sm-12 d-flex align-items-start justify-content-start flex-column">
+                <div class="card p-5 border-0 shadow-sm main-radius">
+                    <div class="card-body">
+                        <!-- <div class="d-flex mb-5 justify-content-center align-items-center">
+                            <small class="far fa-folder-open"></small>
+                            <small class="mx-3">Faktur pajak</small>
+                        </div> -->
+                        <i class="far fa-calendar-alt"></i>
+                        <label class="text-left mb-3 text-secondary"><small>Bulan dan tahun</small></label>
+                        <input id="bulan" type="month" class="form-control main-radius"
+                            placeholder="CONTOH : APRIL 2023">
+                        <button class="main-radius btn form-control mt-3 btn-danger" id="move-files-button">Pindahkan
+                            File
+                        </button>
+                        <div id="status" class="mt-5">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -32,28 +95,55 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+
+
+
+
         $(document).ready(function () {
             $("#move-files-button").click(function () {
-                $.ajax({
-                    url: "move_files.php",
-                    type: "POST",
-                    data: {},
-                    success: function (response) {
-                        if (response > 0) {
-                            $('#status').html('<div class="alert alert-success">' + response + ' file berhasil di pindahkan</div>');
-                        } else {
-                            $('#status').html('<div class="alert alert-danger">tidak ada file yang di pindahkan</div>');
-                        }
+                let bulan = $('#bulan').val();
 
-                        // alert(response);
-                    },
-                    error: function (xhr) {
-                        alert("Error: " + xhr.statusText);
-                    },
-                    beforeSend: function () {
-                        $('#status').html('<i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i> Loading ...');
-                    }
-                });
+                if (bulan) {
+
+                    let bulanIn = ['januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'semptember', 'oktober', 'november', 'desember'];
+                    let bulanNum = parseInt(bulan.split('-')[1]) - 1;
+                    let bulanTahun = bulanIn[bulanNum].toUpperCase() + '-' + bulan.split('-')[0];
+                    $.ajax({
+                        url: "move_files.php",
+                        type: "POST",
+                        data: {
+                            bulan: bulanTahun
+                        },
+                        success: function (response) {
+                            let responseData = JSON.parse(response);
+
+                            setTimeout(() => {
+                                let html = `<div class="main-radius border-0 alert alert-warning">
+                                        ${responseData.fail} file <strong>Gagal</strong> di pindahkan
+                                        </div>`;
+                                html += `<div class="main-radius border-0 alert alert-success">
+                                        ${responseData.success} file <strong>Berhasil</strong> di pindahkan
+                                        </div>`;
+                                $('#status').html(html);
+                            }, 2000);
+
+                            // Hide the alert after 5 seconds
+                            setTimeout(function () {
+                                $('#status').html('');
+                            }, 15000);
+
+                            // alert(response);
+                        },
+                        error: function (xhr) {
+                            alert("Error: " + xhr.statusText);
+                        },
+                        beforeSend: function () {
+                            $('#status').html('<i class="fas fa-spinner fa-spin" style="font-size:18px"></i> Loading ...');
+                        }
+                    });
+                } else {
+                    $('#status').html('<small class="text-danger">isi bulan terlebih dahulu</small>')
+                }
             });
         });
     </script>

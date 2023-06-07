@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i');
+
+body {
+    font-family: 'Nunito' !important;
+    overflow-x: hidden;
+    transition: 1s;
+    /* background: url('../img/bg5png.png'); */
+    background-size: cover;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+div.dataTables_wrapper div.dataTables_filter {
+    display: none;
+}
+
+div.dataTables_wrapper div.dataTables_length {
+    display: none;
+}
+
+.product-img {
+    transition: .5s;
+}
+
+.product-img:hover {
+    transform: scale(0.8);
+}
+
+.hide {
+    display: none;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+#table-section {
+    margin-top: 150px !important;
+}
+
+.my-search {
+    padding: 10px !important;
+    background-color: #eee !important;
+    border: none !important;
+    padding-left: 20px !important;
+}
+
+
+.full-height {
+    height: 100vh;
+}
+
+nav.navbar {
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+}
+
+.bg-second {
+    background-color: #f3f3f3;
+}
+
+
+.main-radius {
+    border-radius: 15px;
+}
+
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1120px;
+    }
+}
+
+
+.navbar-nav li {
+    display: none;
+}
+
+@media (max-width: 480px) {
+
+    .navbar-nav li {
+        display: block !important;
+    }
+
+    #hero {
+        margin-top: 200px;
+    }
+
+    #hero img {
+        transform: perspective(0px) rotateY(0deg) skew(0deg, 0deg);
+        margin-top: 20px;
+        width: 350px;
+    }
+
+    .full-height {
+        height: auto;
+    }
+
+    #list-app .list-app-heading {
+        margin-top: 170px !important;
+    }
+
+    .img-card {
+        margin-top: 100px;
+    }
+
+
+    .img-card-mobile {
+        margin-top: 120px !important;
+        height: 400px;
+        width: 200px;
+        object-fit: cover;
+        object-position: top left;
+    }
+
+
+
+    #hubungi_kami {
+        height: 100vh !important;
+        display: flex;
+        align-items: center;
+    }
+
+
+
+}

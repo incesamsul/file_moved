@@ -1,0 +1,27 @@
+/* Center the loader */
+#loader {
+    background-color: white;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 99999999;
+    top: 0;
+    opacity: 1;
+    transition: 1s;
+}
+
+#loader p {
+    font-size: 20px;
+}
+
+#loader p i {
+    font-size: 16px;
+}
+
+.faded {
+    opacity: 0 !important;
+}
+
+.hide {
+    display: none !important;
+}
